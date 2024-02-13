@@ -204,14 +204,14 @@ favoriteBooks.forEach((book) => {
         <div class="container">
         <div class="row">
           <div class="col">
-             <i class="fa-regular ${book.haveRead ? 'fa-solid fa-square-check fa-xl' : 'fa-square fa-xl'}
-             "style="color: ${book.haveRead ? '#74C0FC;' : '#74C0FC;'}
-             "onclick="changeReadStatus(event, ${books.indexOf(book)})"></i>
+            <i class="fa-regular ${book.haveRead ? 'fa-square-check fa-lg' : 'fa-regular fa-square fa-lg'}
+            "style="color: ${book.haveRead ? '#74C0FC;' : '#74C0FC;'}
+            "onclick="changeReadStatus(event, ${books.indexOf(book)})"></i>
           </div>
           <div class="col order-12">
-             <i class="fa-solid ${book.favorite ? 'fa-heart fa-lg' : 'fa-solid fa-heart-crack fa-lg'}
-             "style="color: ${book.favorite ? '#B197FC;' : '#B197FC;'}
-             "onclick="changeFavoriteStatus(event, ${books.indexOf(book)})"></i>
+            <i class="fa-solid ${book.favorite ? 'fa-heart fa-lg' : 'fa-solid fa-heart-crack fa-lg'}
+            "style="color: ${book.favorite ? '#B197FC;' : '#B197FC;'}
+            "onclick="changeFavoriteStatus(event, ${books.indexOf(book)})"></i>
           </div>          
         </div>
         </div>
