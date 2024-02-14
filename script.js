@@ -104,17 +104,19 @@ let books = [
         
         <div class="container">
           <div class="row">
-            <div class="col">
-             <i class="fa-regular ${book.haveRead ? 'fa-square-check fa-lg' : 'fa-regular fa-square fa-lg'}
-             "style="color: ${book.haveRead ? '#74C0FC;' : '#74C0FC;'}
-             "onclick="changeReadStatus(event, ${books.indexOf(book)})"></i>
+            
+          <div>
+          <i class= "fa ${book.haveRead ? "fa-solid fa-square-check fa-lg" : "fa-regular fa-square fa-lg" }
+          " style="color: ${book.haveRead ? '#74C0FC' : '#74C0FC'};"></i>  
+          <button class="statusButton btn btn-outline-primary"> ${ book.haveRead ? 'Have read it' : "Want to read it"} </button>
           </div>
-          <div class="col order-12">
-             <i class="fa-solid ${book.favorite ? 'fa-heart fa-lg' : 'fa-solid fa-heart-crack fa-lg'}
-             "style="color: ${book.favorite ? '#B197FC;' : '#B197FC;'}
-             "onclick="changeFavoriteStatus(event, ${books.indexOf(book)})"></i>
-          </div>          
-        </div>
+          
+          <div>
+           <i class="fa ${book.favorite ? "fa-regular fa-heart fa-lg" : "fa-solid fa-heart-crack fa-lg"}
+           " style="color: ${book.favorite ? '#B197FC' : '#B197FC'};"></i>  
+          <button class="statusFavButton btn btn-outline-primary"> ${ book.favorite ? 'Favorite!' : "Unfavorite"} </button>
+          </div> 
+        
         </div>
         <div class="w-100"></div>
         <div class="card-footer w-100 text-muted">${book.memo}
@@ -126,55 +128,79 @@ let books = [
     document.querySelector('.collection-list').append(cardDiv);
 });
 
-//book.favorite to change Status//
-const changeFavoriteStatus = (event, index) => {
-  let icon = event.target;
-  let book = books[index];
-  book.favorite = !book.favorite;
-
-  if (book.favorite) {
-   icon.classList.remove( 'fa-solid', 'fa-heart', 'fa-lg');
-   icon.classList.add('fa-solid', 'fa-heart', 'fa-lg');
-   icon.style.color = '#B197FC';
-   icon.innerText= '  ';
-   book.haveRead = false;
+//ReadStatus
+const changeStatus = (event) => {
+  console.log('status change', event.target);
+   // click on button
+  let buttonWeClickedOn = event.target
+  let icon = buttonWeClickedOn.previousElementSibling
+  //  use the button to find the icon
+  console.log( icon.classList);
+  // change classname of the icon
+  // if the icon has the class -check, remove it, add -bookmark
+  if(icon.classList.contains('fa-solid')) {
+    icon.classList.remove('fa-solid', 'fa-square-check', 'fa-lg');
+    icon.classList.add('fa-regular', 'fa-square', 'fa-lg');
+    buttonWeClickedOn.innerText = 'Want to read it';
   } else {
-   icon.classList.remove('fa-solid', 'fa-heart-crack', 'fa-lg');
-   icon.classList.add( 'fa-solid', 'fa-heart', 'fa-lg');
-   icon.style.color = '#B197FC';
-   icon.innerText= ' Favorite';
-   book.haveRead = true;
- }
+    icon.classList.remove('fa-regular', 'fa-square', 'fa-lg');
+    icon.classList.add('fa-solid', 'fa-square-check', 'fa-lg');
+    buttonWeClickedOn.innerText = 'Have read it';
+  }
+  console.log(icon);
+  // Alternative: move icon into button, and change inner html of button
 }
 
-//book.haveRead to change Status//
-const changeReadStatus = (event, index) => {
-  let icon = event.target;
-  let book = books[index];
-  book.haveRead = !book.haveRead; // トグル
+// Add listner to all status buttons: 
+let statusButtons = document.querySelectorAll('.statusButton')
 
-  if (book.haveRead) {
-   icon.classList.remove('fa-regular', 'fa-square', 'fa-lg'); // Remove regular, square, and xl classes
-   icon.classList.add('fa-regular', 'fa-square-check', 'fa-lg'); // Add regular, square-check, and xl classes
-   icon.style.color = '#74C0FC'; // Set color to read color
-   icon.innerText = ' Read'; // Remove any text
+statusButtons.forEach(button => {
+  button.addEventListener('click', changeStatus)
+})
+// Using add event listener instead of onclick inline
+let buttonWithClick = document.querySelector('#eventButton')
+
+//buttonWithClick.addEventListener('click', () => {
+//  console.log('Button with event listner added by js');
+//})
+
+
+
+
+//FavoriteStatus
+const changeFavStatus = (event) => {
+  console.log('status fav change', event.target);
+   // click on button
+  let favButtonWeClickedOn = event.target
+  let icon = favButtonWeClickedOn.parentElement.querySelector('i');
+  //  use the button to find the icon
+  console.log( icon.classList);
+  // change classname of the icon
+  // if the icon has the class -check, remove it, add -bookmark
+  if(icon.classList.contains('fa-heart')) {
+    icon.classList.remove('fa-regular','fa-heart','fa-lg');
+    icon.classList.add('fa-solid','fa-heart-crack','fa-lg');
+    favButtonWeClickedOn.innerText = 'Unfavorite!';
   } else {
-   icon.classList.remove('fa-regular', 'fa-square-check', 'fa-lg'); // Remove regular, square-check, and xl classes
-   icon.classList.add('fa-regular', 'fa-square', 'fa-lg'); // Add regular, square, and xl classes
-   icon.style.color = '#74C0FC'; // Set color to unread color
-   icon.innerText = ' '; // Add text back
- }
+    icon.classList.remove('fa-solid','fa-heart-crack','fa-lg');
+    icon.classList.add('fa-regular','fa-heart','fa-lg');
+    favButtonWeClickedOn.innerText = 'Favorite!';
+  }
+  console.log(icon);
+  // Alternative: move icon into button, and change inner html of button
 }
+// Add listner to all status buttons: 
+let statusFavButtons = document.querySelectorAll('.statusFavButton')
 
-// let hearts = document.querySelectorAll('.heart')
-// hearts.forEach(button => {
-//   button.addEventListener('click', changeFavoriteStatus)
-// })
-// let havereads = document.querySelectorAll('.haveread')
-// havereads.forEach(button => {
-//   button.addEventListener('click', changeReadStatus)
-// })
+statusFavButtons.forEach(button => {
+  button.addEventListener('click', changeFavStatus)
+})
+// Using add event listener instead of onclick inline
+let favButtonWithClick = document.querySelector('#eventButton')
 
+// favButtonWithClick.addEventListener('click', () => {
+//   console.log('Button with event listner added by js');
+// })
 
 
 // Favorite Books
@@ -223,13 +249,3 @@ favoriteBooks.forEach((book) => {
   
     favoriteBooksListDiv.appendChild(cardDiv);
 });
-
-
-//fetch//
-//const getBooks = async() => {
-//let response = await fetch('webaddress')  
-//let data = response.json()
-//DataTransfer.
-//}
-
-//getBooks() 
